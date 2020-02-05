@@ -1,5 +1,5 @@
 jobs:
-  integration-tests:
+  increment-package-version:
     executor: vsce/node-browsers
     working_directory: ~/project/vsce-orb-integration-test
     steps:

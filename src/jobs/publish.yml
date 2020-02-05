@@ -13,6 +13,7 @@ parameters:
       Extension ID of your extension. Always ${publisher}.${name}
       Check manifest: https://code.visualstudio.com/api/references/extension-manifest
     type: string
+    default: ''
   push-git-tag:
     description: |
       Whether or not to push git tag to your repository. Default to true

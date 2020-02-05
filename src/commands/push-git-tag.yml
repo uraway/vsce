@@ -6,10 +6,25 @@ parameters:
       Extension ID of your extension. Always ${publisher}.${name}
       Check manifest: https://code.visualstudio.com/api/references/extension-manifest
     type: string
+    default: ''
 steps:
+  - run:
+      name: Install jq
+      command: sudo apt-get install jq
+  - when:
+      condition: <<parameters.extension-id>>
+      steps:
+        - run: echo 'EXTENSION_ID=<<parameters.extension-id>>' >> $BASH_ENV
+  - unless:
+      condition: <<parameters.extension-id>>
+      steps:
+        - run: |
+            PUBLISHER=$(cat package.json | jq -r '.publisher')
+            NAME=${cat package.json | jq -r '.name'}
+            echo 'EXTENSION_ID=$PUBLISHER.$NAME' >> $BASH_ENV
   - run:
       name: Publish your extension
       command: |
-        TAG=$(npx vsce show << parameters.extension-id >> | grep Version: | sed -E 's|Version:||' | sed -E 's| ||g')
-        git tag -a "$TAG" -m "View CHANGELOG: https://marketplace.visualstudio.com/items/<< parameters.extension-id >>/changelog"
-        git push origin "$TAG"
+        TAG=$(npx vsce show << parameters.extension-id >> --json | jq -r '.versions[0].version')
+        git tag -a "v$TAG" -m "View CHANGELOG: https://marketplace.visualstudio.com/items/<< parameters.extension-id >>/changelog"
+        git push origin "v$TAG"
