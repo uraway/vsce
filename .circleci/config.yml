@@ -21,10 +21,12 @@ jobs:
             - ba:b7:1a:a1:82:db:ae:fa:75:8c:38:54:30:8e:10:29
       - vsce/configure-git
       - run: |
-          git checkout master && \
-          npm version patch && \
-          git add package.json && \
-          git commit -m "integration-test"
+          git checkout master
+          git reset --hard origin/master
+          npm version patch
+          git add .
+          git status
+          git commit -m "[ci skip] integration-test"
           git push origin master --force
 
 orbs:
