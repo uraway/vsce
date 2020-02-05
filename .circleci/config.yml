@@ -23,8 +23,7 @@ jobs:
       - run: |
           git checkout master && \
           npm version patch && \
-          cd .. && \
-          git add . && \
+          git add package.json && \
           git commit -m "integration-test"
           git push origin master --force
 
