@@ -16,5 +16,5 @@ steps:
   - run:
       name: Publish your extension
       command: |
-        cd << package-path >>
+        cd << parameters.package-path >>
         npx vsce publish --yarn -p $<< parameters.publish-token-variable >>
