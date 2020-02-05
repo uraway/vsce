@@ -1,5 +1,5 @@
 description: |
-  Uses the CLI to publish an orb to the registry.
+  Publish VS Code Extension
 executor: node
 parameters:
   publish-token-variable:
@@ -13,10 +13,26 @@ parameters:
       Extension ID of your extension. Always ${publisher}.${name}
       Check manifest: https://code.visualstudio.com/api/references/extension-manifest
     type: string
+  push-git-tag:
+    description: |
+      Whether or not to push git tag to your repository. Default to true
+    type: boolean
+    default: true
+  ssh-fingerprints:
+    default: ""
+    description: |
+      Fingerprints for SSH deploy key (add the public key as a read/write key on GitHub; add the private key in CircleCI via SSH Permissions, with github.com as Hostname). Used to push a git tag back to the project's repository.
+    type: string
 steps:
   - checkout
   - publish:
       publish-token-variable: << parameters.publish-token-variable >>
-  - configure-git
-  - push-git-tag:
-      extension-id: << parameters.extension-id >>
+  - when:
+      condition: << parameters.push-git-tag >>
+      steps:
+        - add_ssh_keys:
+            fingerprints:
+            - <<parameters.ssh-fingerprints>>
+        - configure-git
+        - push-git-tag:
+            extension-id: << parameters.extension-id >>

@@ -1,8 +1,30 @@
 jobs:
   integration-tests:
-    executor: orb-tools/ubuntu
+    executor: vsce/node-browsers
+    working_directory: ~/project/vsce-orb-integration-test
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
+      - restore_cache:
+          keys:
+            - v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v1-node-cache-{{ .Branch }}
+            - v1-node-cache-
+      - run: npm test
+      - save_cache:
+          key: v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - add_ssh_keys:
+          fingerprints:
+            - ba:b7:1a:a1:82:db:ae:fa:75:8c:38:54:30:8e:10:29
+      - vsce/configure-git
+      - run: |
+          npm version patch && \
+          cd .. && \
+          git add . && \
+          git commit -m "integration-test"
+          git push origin master --force
 
 orbs:
   orb-tools: circleci/orb-tools@9.0.0
@@ -19,7 +41,12 @@ version: 2.1
 workflows:
   integration-tests_prod-release:
     jobs:
-      - integration-tests
+      - increment-package-version
+      - vsce/publish:
+          publish-token-variable: VSCODE_MARKETPLACE_TOKEN
+          push-git-tag: false
+          requires:
+            - increment-package-version
       - orb-tools/dev-promote-prod-from-commit-subject:
           add-pr-comment: true
           fail-if-semver-not-indicated: false
@@ -29,7 +56,7 @@ workflows:
           orb-name: uraway/vsce
           publish-version-tag: false
           requires:
-            - integration-tests
+            - vsce/publish
     when: << pipeline.parameters.run-integration-tests >>
   lint_pack-validate_publish-dev:
     jobs:
