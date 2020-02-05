@@ -1,19 +1,12 @@
-version: 2.1
+jobs:
+  integration-tests:
+    executor: orb-tools/ubuntu
+    steps:
+      - checkout
 
 orbs:
   orb-tools: circleci/orb-tools@9.0.0
   vsce: uraway/vsce@<<pipeline.parameters.dev-orb-version>>
-
-jobs:
-  integration-tests-for-your-orb:
-    executor: orb-tools/ubuntu
-    steps:
-      - checkout
-orb_promotion_filters:
-  branches:
-    ignore: /.*/
-  tags:
-    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
 
 parameters:
   dev-orb-version:
@@ -22,11 +15,21 @@ parameters:
   run-integration-tests:
     default: false
     type: boolean
-
+version: 2.1
 workflows:
-  integration-tests:
+  integration-tests_prod-release:
     jobs:
-      - integration-tests-for-your-orb
+      - integration-tests
+      - orb-tools/dev-promote-prod-from-commit-subject:
+          add-pr-comment: true
+          fail-if-semver-not-indicated: false
+          filters:
+            branches:
+              only: master
+          orb-name: uraway/vsce
+          publish-version-tag: false
+          requires:
+            - integration-tests
     when: << pipeline.parameters.run-integration-tests >>
   lint_pack-validate_publish-dev:
     jobs:
@@ -35,33 +38,11 @@ workflows:
           requires:
             - orb-tools/lint
       - orb-tools/publish-dev:
-          orb-name: uraway/vsce
+          orb-name: uraway/vsce-name
           requires:
             - orb-tools/pack
       - orb-tools/trigger-integration-tests-workflow:
           name: trigger-integration-dev
           requires:
             - orb-tools/publish-dev
-    unless: << pipeline.parameters.run-integration-tests >>
-  tag-triggered-orb-publishing:
-    jobs:
-      # - hold-for-approval:
-      #     filters:
-      #       branches:
-      #         ignore: /.*/
-      #       tags:
-      #         only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
-      #     type: approval
-      - orb-tools/dev-promote-prod-from-git-tag:
-          add-pr-comment: true
-          bot-user: uraway
-          ssh-fingerprints: ba:b7:1a:a1:82:db:ae:fa:75:8c:38:54:30:8e:10:29
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
-          orb-name: uraway/vsce
-          # requires:
-          #   - hold-for-approval
     unless: << pipeline.parameters.run-integration-tests >>
