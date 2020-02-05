@@ -3,7 +3,7 @@
     "displayName": "vsce-orb-integration-test",
     "publisher": "uraway",
     "description": "",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "engines": {
         "vscode": "^1.41.0"
     },
