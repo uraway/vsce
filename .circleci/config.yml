@@ -10,6 +10,7 @@ jobs:
             - v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
             - v1-node-cache-{{ .Branch }}
             - v1-node-cache-
+      - run: npm install
       - run: npm test
       - save_cache:
           key: v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
