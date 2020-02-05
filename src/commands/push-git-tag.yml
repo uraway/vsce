@@ -1,0 +1,15 @@
+description: |
+  Push git tag to your repository
+parameters:
+  extension-id:
+    description: |
+      Extension ID of your extension. Always ${publisher}.${name}
+      Check manifest: https://code.visualstudio.com/api/references/extension-manifest
+    type: string
+steps:
+  - run:
+      name: Publish your extension
+      command: |
+        TAG=$(npx vsce show << parameters.extension-id >> | grep Version: | sed -E 's|Version:||' | sed -E 's| ||g')
+        git tag -a "$TAG" -m "View CHANGELOG: https://marketplace.visualstudio.com/items/<< parameters.extension-id >>/changelog"
+        git push origin "$TAG"

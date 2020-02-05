@@ -1,0 +1,18 @@
+description: |
+  CircleCI Node with chromedriver Docker image
+docker:
+  - image: 'circleci/node:<<parameters.tag>>-latest'
+parameters:
+  resource-class:
+    default: small
+    enum:
+      - small
+      - medium
+      - medium+
+      - large
+      - xlarge
+    type: enum
+  tag:
+    default: latest
+    type: string
+resource_class: <<parameters.resource-class>>

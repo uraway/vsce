@@ -1,0 +1,5 @@
+version: 2.1
+
+description: |
+  Orb for publishing VS Code Extension.
+  source code: https://github.com/uraway/vsce

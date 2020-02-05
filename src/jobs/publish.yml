@@ -1,0 +1,22 @@
+description: |
+  Uses the CLI to publish an orb to the registry.
+executor: node
+parameters:
+  publish-token-variable:
+    default: VSCODE_MARKETPLACE_TOKEN
+    description: |
+      Name of environment variable containing your VSCODE_MARKETPLACE_TOKEN token.
+      View detail: https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token
+    type: env_var_name
+  extension-id:
+    description: |
+      Extension ID of your extension. Always ${publisher}.${name}
+      Check manifest: https://code.visualstudio.com/api/references/extension-manifest
+    type: string
+steps:
+  - checkout
+  - publish:
+      publish-token-variable: << parameters.publish-token-variable >>
+  - configure-git
+  - push-git-tag:
+      extension-id: << parameters.extension-id >>

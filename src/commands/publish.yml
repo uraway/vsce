@@ -1,0 +1,14 @@
+description: |
+  Publish extension to VS Code Extension Marketplace
+parameters:
+  publish-token-variable:
+    default: VSCODE_MARKETPLACE_TOKEN
+    description: |
+      Name of environment variable containing your VSCODE_MARKETPLACE_TOKEN token.
+      View detail: https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token
+    type: env_var_name
+steps:
+  - run:
+      name: Publish your extension
+      command: |
+        npx vsce publish --yarn -p $<< parameters.publish-token-variable >>

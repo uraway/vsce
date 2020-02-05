@@ -1,0 +1,8 @@
+description: |
+  Sets mandatory git config fields to allow creating and pushing of tags.
+steps:
+  - run:
+      name: git config
+      command: |
+        git config --global user.name "$CIRCLE_USERNAME"
+        git config --global user.email "$CIRCLE_USERNAME@users.noreply.github.com"
