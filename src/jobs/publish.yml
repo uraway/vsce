@@ -29,11 +29,17 @@ parameters:
     description: |
       Which directory to publish
     type: string
+  prefer-yarn:
+    default: false
+    description: |
+      Use yarn instead of npm
+    type: boolean
 steps:
   - checkout
   - publish:
       publish-token-variable: << parameters.publish-token-variable >>
       package-path: << parameters.package-path >>
+      prefer-yarn: << parameters.prefer-yarn >>
   - when:
       condition: << parameters.push-git-tag >>
       steps:

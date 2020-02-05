@@ -12,9 +12,14 @@ parameters:
     description: |
       Which directory to publish
     type: string
+  prefer-yarn:
+    default: false
+    description: |
+      Use yarn instead of npm
+    type: boolean
 steps:
   - run:
       name: Publish your extension
       command: |
         cd << parameters.package-path >>
-        npx vsce publish --yarn -p $<< parameters.publish-token-variable >>
+        npx vsce publish <<# parameters.prefer-yarn >>--yarn<</ parameters.prefer-yarn >> -p $<< parameters.publish-token-variable >>
