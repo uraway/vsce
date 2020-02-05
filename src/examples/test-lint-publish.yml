@@ -4,17 +4,19 @@ usage:
   orbs:
     vsce: circleci/vsce@x.y.z
 
-  test:
-    executor: vsce/node-browsers
-    steps:
-      - run: npm test
+  jobs:
+    test:
+      executor: vsce/node-browsers
+      steps:
+        - run: npm test
 
   workflows:
     lint-test-publish:
       jobs:
         - test
         - vsce/publish:
-            requires: vsce/test
+            requires:
+              - vsce/test
             filters:
               branches:
                 only: master
