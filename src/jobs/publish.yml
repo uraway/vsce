@@ -24,10 +24,16 @@ parameters:
     description: |
       Fingerprints for SSH deploy key (add the public key as a read/write key on GitHub; add the private key in CircleCI via SSH Permissions, with github.com as Hostname). Used to push a git tag back to the project's repository.
     type: string
+  package-path:
+    default: "."
+    description: |
+      Which directory to publish
+    type: string
 steps:
   - checkout
   - publish:
       publish-token-variable: << parameters.publish-token-variable >>
+      package-path: << parameters.package-path >>
   - when:
       condition: << parameters.push-git-tag >>
       steps:

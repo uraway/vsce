@@ -21,6 +21,7 @@ jobs:
             - ba:b7:1a:a1:82:db:ae:fa:75:8c:38:54:30:8e:10:29
       - vsce/configure-git
       - run: |
+          git checkout master && \
           npm version patch && \
           cd .. && \
           git add . && \
@@ -46,11 +47,12 @@ workflows:
       - vsce/publish:
           publish-token-variable: VSCODE_MARKETPLACE_TOKEN
           push-git-tag: false
+          package-path: vsce-orb-integration-test
           requires:
             - increment-package-version
       - orb-tools/dev-promote-prod-from-commit-subject:
           add-pr-comment: true
-          fail-if-semver-not-indicated: false
+          fail-if-semver-not-indicated: true
           filters:
             branches:
               only: master

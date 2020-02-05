@@ -7,8 +7,14 @@ parameters:
       Name of environment variable containing your VSCODE_MARKETPLACE_TOKEN token.
       View detail: https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token
     type: env_var_name
+  package-path:
+    default: "."
+    description: |
+      Which directory to publish
+    type: string
 steps:
   - run:
       name: Publish your extension
       command: |
+        cd << package-path >>
         npx vsce publish --yarn -p $<< parameters.publish-token-variable >>
