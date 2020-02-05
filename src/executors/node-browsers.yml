@@ -1,7 +1,7 @@
 description: |
   CircleCI Node with chromedriver Docker image
 docker:
-  - image: 'circleci/node:<<parameters.tag>>-latest'
+  - image: 'circleci/node:<<parameters.tag>>-browsers'
 parameters:
   resource-class:
     default: small
