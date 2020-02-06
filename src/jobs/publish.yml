@@ -51,6 +51,6 @@ steps:
       steps:
         - add_ssh_keys:
             fingerprints:
-            - <<parameters.ssh-fingerprints>>
+              - <<parameters.ssh-fingerprints>>
         - configure-git
         - push-git-tag
