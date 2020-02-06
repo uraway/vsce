@@ -14,6 +14,7 @@ workflows:
   integration-tests_prod-release:
     jobs:
       - vsce/publish:
+          name: publish-vsce
           publish-token-variable: VSCODE_MARKETPLACE_TOKEN
           push-git-tag: false
           package-path: vsce-orb-integration-test
@@ -29,10 +30,11 @@ workflows:
                 paths:
                   - node_modules
       - vsce/unpublish:
+          name: unpublish-vsce
           publish-token-variable: VSCODE_MARKETPLACE_TOKEN
           package-path: vsce-orb-integration-test
           requires:
-            - vsce/publish
+            - publish-vsce
       - orb-tools/dev-promote-prod-from-commit-subject:
           add-pr-comment: true
           bot-token-variable: GITHUB_TOKEN
@@ -45,7 +47,7 @@ workflows:
               only: master
           orb-name: uraway/vsce
           requires:
-            - vsce/publish
+            - unpublish-vsce
     when: << pipeline.parameters.run-integration-tests >>
   lint_pack-validate_publish-dev:
     jobs:
