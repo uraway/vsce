@@ -1,3 +1,9 @@
+description: |
+  To publish your extension, you need to create [Personal Access Token](https://docs.microsoft.com/azure/devops/integrate/get-started/authentication/pats).
+  More detail [here](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#publishing-extensions).
+
+  After creation of Personal Acces Token, set as environment variable "VSCODE_MARKETPLACE_TOKEN".
+
 usage:
   version: 2.1
 
