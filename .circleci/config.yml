@@ -1,34 +1,3 @@
-jobs:
-  increment-package-version:
-    executor: vsce/node-browsers
-    working_directory: ~/project/vsce-orb-integration-test
-    steps:
-      - checkout:
-          path: ~/project
-      - restore_cache:
-          keys:
-            - v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v1-node-cache-{{ .Branch }}
-            - v1-node-cache-
-      - run: npm install
-      - run: npm test
-      - save_cache:
-          key: v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-      - add_ssh_keys:
-          fingerprints:
-            - ba:b7:1a:a1:82:db:ae:fa:75:8c:38:54:30:8e:10:29
-      - vsce/configure-git
-      - run: |
-          git checkout master
-          git reset --hard origin/master
-          npm version patch
-          git add .
-          git status
-          git commit -m "[ci skip] integration-test"
-          git push origin master --force
-
 orbs:
   orb-tools: circleci/orb-tools@9.0.0
   vsce: uraway/vsce@<<pipeline.parameters.dev-orb-version>>
@@ -44,7 +13,6 @@ version: 2.1
 workflows:
   integration-tests_prod-release:
     jobs:
-      - increment-package-version
       - vsce/publish:
           publish-token-variable: VSCODE_MARKETPLACE_TOKEN
           push-git-tag: false
@@ -60,8 +28,11 @@ workflows:
                 key: v1-node-cache-{{ .Branch }}-{{ checksum "vsce-orb-integration-test/package-lock.json" }}
                 paths:
                   - node_modules
+      - vsce/unpublish:
+          publish-token-variable: VSCODE_MARKETPLACE_TOKEN
+          package-path: vsce-orb-integration-test
           requires:
-            - increment-package-version
+            - vsce/publish
       - orb-tools/dev-promote-prod-from-git-tag:
           add-pr-comment: true
           bot-token-variable: GITHUB_TOKEN

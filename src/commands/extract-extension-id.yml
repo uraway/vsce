@@ -1,0 +1,9 @@
+description: |
+  Extract and set EXTENSION_ID from package.json
+steps:
+  - run:
+      name: Extract and set EXTENSION_ID
+      command: |
+        PUBLISHER=$(cat package.json | jq -r '.publisher')
+        NAME=${cat package.json | jq -r '.name'}
+        echo 'EXTENSION_ID=$PUBLISHER.$NAME' >> $BASH_ENV

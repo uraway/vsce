@@ -1,0 +1,24 @@
+description: |
+  Unpublish extension
+parameters:
+  publish-token-variable:
+    default: VSCODE_MARKETPLACE_TOKEN
+    description: |
+      Name of environment variable containing your VSCODE_MARKETPLACE_TOKEN token.
+      View detail: https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token
+    type: env_var_name
+  package-path:
+    default: "."
+    description: |
+      Root directory of your extension
+    type: string
+steps:
+  - run:
+      name: Install jq
+      command: sudo apt-get install jq
+  - extract-extension-id
+  - run:
+      name: Publish your extension
+      working_directory: << parameters.package-path >>
+      command: |
+        npx vsce unpublish -f -p $<< parameters.publish-token-variable >> $EXTENSION_ID
