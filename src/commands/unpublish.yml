@@ -19,4 +19,5 @@ steps:
       name: Unpublish your extension
       working_directory: << parameters.package-path >>
       command: |
+        echo "Trying to unpublish $EXTENSION_ID"
         npx vsce unpublish -f -p $<< parameters.publish-token-variable >> $EXTENSION_ID

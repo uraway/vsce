@@ -48,4 +48,5 @@ steps:
       name: Publish your extension
       working_directory: << parameters.package-path >>
       command: |
+        echo "Trying to publish $EXTENSION_ID"
         npx vsce publish <<# parameters.prefer-yarn >>--yarn<</ parameters.prefer-yarn >> -p $<< parameters.publish-token-variable >>
