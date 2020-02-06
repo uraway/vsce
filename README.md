@@ -1,3 +1,6 @@
+# Usage
+
+```yaml
 usage:
   version: 2.1
 
@@ -33,3 +36,4 @@ usage:
             filters:
               branches:
                 only: master
+```
