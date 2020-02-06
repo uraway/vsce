@@ -32,14 +32,20 @@ steps:
   - when:
       condition: << parameters.prefer-yarn >>
       steps:
-        - run: yarn install
+        - run:
+            working_directory: << parameters.package-path >>
+            command: |
+              yarn install
   - unless:
       condition: << parameters.prefer-yarn >>
       steps:
-        - run: npm install
+        - run:
+            working_directory: << parameters.package-path >>
+            command: |
+              npm install
   - steps: << parameters.post-install-steps >>
   - run:
       name: Publish your extension
+      working_directory: << parameters.package-path >>
       command: |
-        cd << parameters.package-path >>
         npx vsce publish <<# parameters.prefer-yarn >>--yarn<</ parameters.prefer-yarn >> -p $<< parameters.publish-token-variable >>
