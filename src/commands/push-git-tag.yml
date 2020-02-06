@@ -11,7 +11,10 @@ steps:
       package-path: << parameters.package-path >>
   - run:
       name: Push git tag
+      working_directory: << parameters.package-path >>
       command: |
-        TAG=$(npx vsce show $EXTENSION_ID --json | jq -r '.versions[0].version')
-        git tag -a "v$TAG" -m "View CHANGELOG: https://marketplace.visualstudio.com/items/$EXTENSION_ID/changelog"
+        TAG=$(cat package.json | jq -r '.version')
+        git tag -a "v$TAG" \
+          -m "View CHANGELOG:" \
+          -m "https://marketplace.visualstudio.com/items/$EXTENSION_ID/changelog"
         git push origin "v$TAG"
