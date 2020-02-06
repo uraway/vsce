@@ -37,7 +37,6 @@ workflows:
             - publish-vsce
       - orb-tools/dev-promote-prod-from-commit-subject:
           add-pr-comment: true
-          bot-token-variable: GITHUB_TOKEN
           bot-user: uraway
           fail-if-semver-not-indicated: true
           publish-version-tag: true
