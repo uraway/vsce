@@ -15,5 +15,5 @@ steps:
       working_directory: << parameters.package-path >>
       command: |
         PUBLISHER=$(cat package.json | jq -r '.publisher')
-        NAME=${cat package.json | jq -r '.name'}
+        NAME=$(cat package.json | jq -r '.name')
         echo 'EXTENSION_ID=$PUBLISHER.$NAME' >> $BASH_ENV
