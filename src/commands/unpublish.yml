@@ -13,10 +13,8 @@ parameters:
       Root directory of your extension
     type: string
 steps:
-  - run:
-      name: Install jq
-      command: sudo apt-get install jq
-  - extract-extension-id
+  - extract-extension-id:
+      package-path: << parameters.package-path >>
   - run:
       name: Publish your extension
       working_directory: << parameters.package-path >>

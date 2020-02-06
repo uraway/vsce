@@ -1,30 +1,17 @@
 description: |
   Push git tag to your repository
 parameters:
-  extension-id:
+  package-path:
+    default: "."
     description: |
-      Extension ID of your extension. Always ${publisher}.${name}
-      Check manifest: https://code.visualstudio.com/api/references/extension-manifest
+      Root directory of your extension
     type: string
-    default: ''
 steps:
-  - run:
-      name: Install jq
-      command: sudo apt-get install jq
-  - when:
-      condition: <<parameters.extension-id>>
-      steps:
-        - run: echo 'EXTENSION_ID=<<parameters.extension-id>>' >> $BASH_ENV
-  - unless:
-      condition: <<parameters.extension-id>>
-      steps:
-        - run: |
-            PUBLISHER=$(cat package.json | jq -r '.publisher')
-            NAME=${cat package.json | jq -r '.name'}
-            echo 'EXTENSION_ID=$PUBLISHER.$NAME' >> $BASH_ENV
+  - extract-extension-id:
+      package-path: << parameters.package-path >>
   - run:
       name: Publish your extension
       command: |
-        TAG=$(npx vsce show << parameters.extension-id >> --json | jq -r '.versions[0].version')
-        git tag -a "v$TAG" -m "View CHANGELOG: https://marketplace.visualstudio.com/items/<< parameters.extension-id >>/changelog"
+        TAG=$(npx vsce show $EXTENSION_ID --json | jq -r '.versions[0].version')
+        git tag -a "v$TAG" -m "View CHANGELOG: https://marketplace.visualstudio.com/items/$EXTENSION_ID/changelog"
         git push origin "v$TAG"
