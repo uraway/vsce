@@ -10,7 +10,7 @@ steps:
   - extract-extension-id:
       package-path: << parameters.package-path >>
   - run:
-      name: Publish your extension
+      name: Push git tag
       command: |
         TAG=$(npx vsce show $EXTENSION_ID --json | jq -r '.versions[0].version')
         git tag -a "v$TAG" -m "View CHANGELOG: https://marketplace.visualstudio.com/items/$EXTENSION_ID/changelog"
