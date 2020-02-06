@@ -11,84 +11,84 @@ After creation of Personal Acces Token, set as environment variable "VSCODE_MARK
 
 ## Usage
 
+Full usage example: [Orb registry page](https://circleci.com/orbs/registry/orb/uraway/vsce)
+
 ```yaml
-usage:
-  version: 2.1
+version: 2.1
 
-  orbs:
-    vsce: circleci/vsce@x.y.z
+orbs:
+  vsce: circleci/vsce@x.y.z
 
-  jobs:
-    test:
-      executor: vsce/node-browsers
-      steps:
-        - run: npm test
+jobs:
+  test:
+    executor: vsce/node-browsers
+    steps:
+      - run: npm test
 
-  workflows:
-    lint-test-publish:
-      jobs:
-        - test
-        - vsce/publish:
-            publish-token-variable: VSCODE_MARKETPLACE_TOKEN
-            push-git-tag: false
-            # steps for caching
-            pre-install-steps:
-              - restore_cache:
-                  keys:
-                    - v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
-                    - v1-node-cache-{{ .Branch }}
-                    - v1-node-cache-
-            post-install-steps:
-              - save_cache:
-                  key: v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
-                  paths:
-                    - node_modules
-            requires:
-              - test
-            filters:
-              branches:
-                only: master
+workflows:
+  lint-test-publish:
+    jobs:
+      - test
+      - vsce/publish:
+          publish-token-variable: VSCODE_MARKETPLACE_TOKEN
+          push-git-tag: false
+          # steps for caching
+          pre-install-steps:
+            - restore_cache:
+                keys:
+                  - v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
+                  - v1-node-cache-{{ .Branch }}
+                  - v1-node-cache-
+          post-install-steps:
+            - save_cache:
+                key: v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
+                paths:
+                  - node_modules
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
 ```
 
 Or if you prefer yarn instead of npm:
 
 ```yaml
-usage:
-  version: 2.1
+version: 2.1
 
-  orbs:
-    vsce: circleci/vsce@x.y.z
+orbs:
+  vsce: circleci/vsce@x.y.z
 
-  jobs:
-    test:
-      executor: vsce/node-browsers
-      steps:
-        - run: npm test
+jobs:
+  test:
+    executor: vsce/node-browsers
+    steps:
+      - run: yarn test
 
-  workflows:
-    lint-test-publish:
-      jobs:
-        - test
-        - vsce/publish:
-            publish-token-variable: VSCODE_MARKETPLACE_TOKEN
-            push-git-tag: false
-            # Use yarn instead of npm
-            prefer-yarn: true
-            # Update checksum template
-            pre-install-steps:
-              - restore_cache:
-                  keys:
-                    - v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-                    - v1-node-cache-{{ .Branch }}
-                    - v1-node-cache-
-            post-install-steps:
-              - save_cache:
-                  key: v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-                  paths:
-                    - node_modules
-            requires:
-              - test
-            filters:
-              branches:
-                only: master
+workflows:
+  lint-test-publish:
+    jobs:
+      - test
+      - vsce/publish:
+          publish-token-variable: VSCODE_MARKETPLACE_TOKEN
+          push-git-tag: false
+          # Use yarn instead of npm
+          prefer-yarn: true
+          # Update checksum template
+          pre-install-steps:
+            - restore_cache:
+                keys:
+                  - v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+                  - v1-node-cache-{{ .Branch }}
+                  - v1-node-cache-
+          post-install-steps:
+            - save_cache:
+                key: v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+                paths:
+                  - node_modules
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
 ```
