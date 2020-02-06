@@ -39,7 +39,7 @@ workflows:
           add-pr-comment: true
           bot-token-variable: GITHUB_TOKEN
           bot-user: uraway
-          fail-if-semver-not-indicated: false
+          fail-if-semver-not-indicated: true
           publish-version-tag: true
           ssh-fingerprints: ba:b7:1a:a1:82:db:ae:fa:75:8c:38:54:30:8e:10:29
           filters:
