@@ -17,7 +17,7 @@ usage:
         - run: npm test
 
   workflows:
-    lint-test-publish:
+    test-publish:
       jobs:
         - test
         - vsce/publish:
