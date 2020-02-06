@@ -17,7 +17,7 @@ Full usage example: [Orb registry page](https://circleci.com/orbs/registry/orb/u
 version: 2.1
 
 orbs:
-  vsce: circleci/vsce@x.y.z
+  vsce: uraway/vsce@x.y.z
 
 jobs:
   test:
@@ -57,7 +57,7 @@ Or if you prefer yarn instead of npm:
 version: 2.1
 
 orbs:
-  vsce: circleci/vsce@x.y.z
+  vsce: uraway/vsce@x.y.z
 
 jobs:
   test:
