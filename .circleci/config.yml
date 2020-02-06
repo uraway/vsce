@@ -33,15 +33,16 @@ workflows:
           package-path: vsce-orb-integration-test
           requires:
             - vsce/publish
-      - orb-tools/dev-promote-prod-from-git-tag:
+      - orb-tools/dev-promote-prod-from-commit-subject:
           add-pr-comment: true
           bot-token-variable: GITHUB_TOKEN
           bot-user: uraway
+          fail-if-semver-not-indicated: false
+          publish-version-tag: true
+          ssh-fingerprints: ba:b7:1a:a1:82:db:ae:fa:75:8c:38:54:30:8e:10:29
           filters:
             branches:
-              ignore: /.*/
-            tags:
-              only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+              only: master
           orb-name: uraway/vsce
           requires:
             - vsce/publish
