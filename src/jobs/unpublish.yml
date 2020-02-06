@@ -1,0 +1,20 @@
+description: |
+  Unpublish VS Code Extension
+executor: node
+parameters:
+  publish-token-variable:
+    default: VSCODE_MARKETPLACE_TOKEN
+    description: |
+      Name of environment variable containing your VSCODE_MARKETPLACE_TOKEN token.
+      View detail: https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token
+    type: env_var_name
+  package-path:
+    default: "."
+    description: |
+      Which directory to unpublish
+    type: string
+steps:
+  - checkout
+  - unpublish:
+      publish-token-variable: << parameters.publish-token-variable >>
+      package-path: << parameters.package-path >>

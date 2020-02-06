@@ -1,0 +1,23 @@
+description: |
+  Unpublish extension
+parameters:
+  publish-token-variable:
+    default: VSCODE_MARKETPLACE_TOKEN
+    description: |
+      Name of environment variable containing your VSCODE_MARKETPLACE_TOKEN token.
+      View detail: https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token
+    type: env_var_name
+  package-path:
+    default: "."
+    description: |
+      Root directory of your extension
+    type: string
+steps:
+  - extract-extension-id:
+      package-path: << parameters.package-path >>
+  - run:
+      name: Unpublish your extension
+      working_directory: << parameters.package-path >>
+      command: |
+        echo "Trying to unpublish $EXTENSION_ID"
+        npx vsce unpublish -f -p $<< parameters.publish-token-variable >> $EXTENSION_ID

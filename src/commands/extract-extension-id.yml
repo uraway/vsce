@@ -1,0 +1,19 @@
+description: |
+  Extract and set EXTENSION_ID from package.json
+parameters:
+  package-path:
+    default: "."
+    description: |
+      Root directory of your extension
+    type: string
+steps:
+  - run:
+      name: Install jq
+      command: sudo apt-get install jq
+  - run:
+      name: Extract and set EXTENSION_ID
+      working_directory: << parameters.package-path >>
+      command: |
+        echo 'export PUBLISHER=$(cat package.json | jq -r '.publisher')'
+        echo 'export NAME=$(cat package.json | jq -r '.name')'
+        echo 'export EXTENSION_ID=$PUBLISHER.$NAME' >> $BASH_ENV

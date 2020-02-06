@@ -10,11 +10,43 @@ parameters:
   package-path:
     default: "."
     description: |
-      Which directory to publish
+      Root directory of your extension
     type: string
+  prefer-yarn:
+    default: false
+    description: |
+      Use yarn instead of npm
+    type: boolean
+  pre-install-steps:
+    default: []
+    description: |
+      Steps which are executed before installation of node_modules. Use restore_cache here.
+    type: steps
+  post-install-steps:
+    default: []
+    description: |
+      Steps which are executed after installation of node_modules. Use save_cache here.
+    type: steps
 steps:
+  - steps: << parameters.pre-install-steps >>
+  - when:
+      condition: << parameters.prefer-yarn >>
+      steps:
+        - run:
+            working_directory: << parameters.package-path >>
+            command: |
+              yarn install
+  - unless:
+      condition: << parameters.prefer-yarn >>
+      steps:
+        - run:
+            working_directory: << parameters.package-path >>
+            command: |
+              npm install
+  - steps: << parameters.post-install-steps >>
   - run:
       name: Publish your extension
+      working_directory: << parameters.package-path >>
       command: |
-        cd << parameters.package-path >>
-        npx vsce publish --yarn -p $<< parameters.publish-token-variable >>
+        echo "Trying to publish $EXTENSION_ID"
+        npx vsce publish <<# parameters.prefer-yarn >>--yarn<</ parameters.prefer-yarn >> -p $<< parameters.publish-token-variable >>
