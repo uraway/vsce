@@ -23,7 +23,7 @@ jobs:
   test:
     executor: vsce/node-browsers
     steps:
-      - run: npm test
+      - checkout
 
 workflows:
   lint-test-publish:
@@ -63,7 +63,7 @@ jobs:
   test:
     executor: vsce/node-browsers
     steps:
-      - run: yarn test
+      - checkout
 
 workflows:
   lint-test-publish:

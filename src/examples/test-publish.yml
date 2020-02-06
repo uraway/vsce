@@ -14,7 +14,7 @@ usage:
     test:
       executor: vsce/node-browsers
       steps:
-        - run: npm test
+        - checkout
 
   workflows:
     test-publish:
