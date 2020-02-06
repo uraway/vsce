@@ -34,12 +34,24 @@ parameters:
     description: |
       Use yarn instead of npm
     type: boolean
+  pre-install-steps:
+    default: []
+    description: |
+      Steps which are executed before installation of node_modules. Use restore_cache here.
+    type: steps
+  post-install-steps:
+    default: []
+    description: |
+      Steps which are executed after installation of node_modules. Use save_cache here.
+    type: steps
 steps:
   - checkout
   - publish:
       publish-token-variable: << parameters.publish-token-variable >>
       package-path: << parameters.package-path >>
       prefer-yarn: << parameters.prefer-yarn >>
+      pre-install-steps: << parameters.pre-install-steps >>
+      post-install-steps: << parameters.post-install-steps >>
   - when:
       condition: << parameters.push-git-tag >>
       steps:
