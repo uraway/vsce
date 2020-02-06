@@ -14,6 +14,4 @@ steps:
       name: Extract and set EXTENSION_ID
       working_directory: << parameters.package-path >>
       command: |
-        echo 'export PUBLISHER=$(cat package.json | jq -r '.publisher')'
-        echo 'export NAME=$(cat package.json | jq -r '.name')'
-        echo 'export EXTENSION_ID=$PUBLISHER.$NAME' >> $BASH_ENV
+        echo 'export EXTENSION_ID=$(cat package.json | jq -r '.publisher').$(cat package.json | jq -r '.name')' >> $BASH_ENV
