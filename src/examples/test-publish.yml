@@ -8,7 +8,7 @@ usage:
   version: 2.1
 
   orbs:
-    vsce: circleci/vsce@x.y.z
+    vsce: uraway/vsce@x.y.z
 
   jobs:
     test:
