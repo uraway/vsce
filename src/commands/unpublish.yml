@@ -20,4 +20,6 @@ steps:
       working_directory: << parameters.package-path >>
       command: |
         echo "Trying to unpublish $EXTENSION_ID"
+        # <=7.0.5 CI environments prompting user input.
+        nvm install-latest-npm
         npx vsce unpublish -f -p $<< parameters.publish-token-variable >> $EXTENSION_ID
