@@ -1,7 +1,7 @@
 description: |
   CircleCI Node Docker image
 docker:
-  - image: 'circleci/node:<<parameters.tag>>'
+  - image: 'cimg/node:<<parameters.tag>>'
 parameters:
   resource-class:
     default: small
