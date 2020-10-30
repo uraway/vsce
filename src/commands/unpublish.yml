@@ -20,7 +20,4 @@ steps:
       working_directory: << parameters.package-path >>
       command: |
         echo "Trying to unpublish $EXTENSION_ID"
-        # <=7.0.5 CI environments prompting user input.
-        npm install --global npm@>=7.0.6
-        sudo chown -R $USER /usr/local/lib/node_modules
         npx vsce unpublish -f -p $<< parameters.publish-token-variable >> $EXTENSION_ID
