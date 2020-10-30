@@ -50,5 +50,5 @@ steps:
       command: |
         echo "Trying to publish $EXTENSION_ID"
         # <=7.0.5 CI environments prompting user input.
-        nvm install-latest-npm
+        npm install --global npm@>=7.0.6
         npx vsce publish <<# parameters.prefer-yarn >>--yarn<</ parameters.prefer-yarn >> -p $<< parameters.publish-token-variable >>
