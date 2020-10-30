@@ -1,7 +1,7 @@
 description: |
   CircleCI Node Docker image
 docker:
-  - image: 'circleci/node:<<parameters.tag>>'
+  - image: 'cimg/node:<<parameters.tag>>'
 parameters:
   resource-class:
     default: small
@@ -13,6 +13,6 @@ parameters:
       - xlarge
     type: enum
   tag:
-    default: latest
+    default: lts
     type: string
 resource_class: <<parameters.resource-class>>

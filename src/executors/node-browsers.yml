@@ -1,7 +1,7 @@
 description: |
   CircleCI Node with chromedriver Docker image
 docker:
-  - image: 'circleci/node:<<parameters.tag>>-browsers'
+  - image: 'cimg/node:<<parameters.tag>>-browsers'
 parameters:
   resource-class:
     default: small
@@ -13,6 +13,6 @@ parameters:
       - xlarge
     type: enum
   tag:
-    default: latest
+    default: lts
     type: string
 resource_class: <<parameters.resource-class>>
